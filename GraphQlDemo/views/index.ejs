@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .notLoggedIn {
+            position: absolute;
+            margin: 0 auto;
+            text-align: center;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+        }
+        .loginUser,
+        .createUser {
+            border: solid 0.5px;
+            background-color: #E0FFFF
+        }
+        #cheatSheet{
+            background-color: yellow;
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <% 
+    if(status !== ""){
+        %><h1 style="color: green;">user created: <%= status.userName %></h1><%
+    }
+    %>
+    <p>made by: Hallur við Neyst</p>
+    <div id="cheatSheet">
+        <h5>cheat sheet:</h5>
+        <% for(var i = 0; i < users.length; i++){
+             %>
+            <p>username: <%= users[i].userName %>, password: <%= users[i].password %></p>
+            <%}  %>
+    </div>
+    <!--<form action="/phoneLogin" method="post">
+        <input type="text" name="uname"/><br>
+        <input type="text" name="password"/><br>
+        <input type="text" name="radius"/><br>
+        <input type="number" name="lon" placeholder="lon"/><br>
+        <input type="number" name="lat" placeholder="lat"/>
+        <input type="submit"/>
+    </form>-->
+    <div class="notLoggedIn">
+        <div class="loginUser">
+            <h1>hello from ejs :D please log in</h1>
+            <form action="/login" method="post">
+                <input type="text" placeholder="username" name="uName" />
+                <input type="password" placeholder="password" name="psw" />
+                </br>
+                </br>
+                <input type="submit" value="login" />
+            </form>
+            </br>
+        </div>
+        </br>
+        <div class="createUser">
+            <h1>or create new user</h1>
+            <form action="/create" method="post">
+                <input type="text" placeholder="first name" name="fName" />
+                </br>
+                <input type="text" placeholder="last name" name="lName" />
+                </br>
+                <input type="text" placeholder="user name" name="uName" />
+                </br>
+                <input type="password" placeholder="password" name="psw" />
+                </br>
+                <button id="jobsButton">+</button>
+                <span>add jobs (click button to add jobs, max 3 jobs)</span>
+                <div id="jobsInputs"></div>
+                </br>
+                <input type="submit" value="create" />
+            </form>
+            </br>
+        </div>
+    </div>
+    <script>
+        var jobNum = 1;
+        document.getElementById("jobsButton").onclick = (e) => {
+            if (jobNum != 4) {
+                document.getElementById("jobsInputs").innerHTML +=
+                    "<p>job number: " + jobNum + "</p>" +
+                    "<input placeholder='job type' name='jobType" + jobNum + "'/></br>" +
+                    "<input placeholder='job company'name='jobCompany" + jobNum + "'/></br>" +
+                    "<input placeholder='job company url'name='jobCompanyUrl" + jobNum + "'/></br>";
+                jobNum++;
+            } e.preventDefault();
+        };
+    </script>
+</body>
+
+</html>
