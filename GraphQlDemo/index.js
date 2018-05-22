@@ -20,7 +20,7 @@ app.use('/graphql', expressGraphQL({
     graphiql:true
 }))
 
-app.get('/', (req, res) => {
+app.get('/express', (req, res) => {
     UserFacade.getAllUsers().then((users)=>{
         res.render('index.ejs', {users: users, status: ""});
     })
@@ -122,4 +122,4 @@ app.post('/phoneLogin', (req, res)=>{
             }
         })
 })
-app.listen(3000, () => { console.log("server is running on port 3000"); });
+app.listen(8080, () => { console.log("server is running on port 8080"); });

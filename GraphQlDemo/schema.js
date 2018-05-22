@@ -1,6 +1,7 @@
 const {
     GraphQLObjectType,
     GraphQLString,
+    GraphQLFloat,
     GraphQLInt,
     GraphQLSchema,
     GraphQLList,
@@ -11,6 +12,7 @@ var UserFacade = require("./facades/userFacade.js");
 var LocationBlogFacade = require("./facades/locationBlogFacade.js");
 var mongoose = require("mongoose");
 var User = require("./models/user.js");
+var Position = require("./models/position.js");
 var LocationBlog = require("./models/locationBlog.js");
 var db = mongoose.connection;
 db.on('error', () => { console.log('---FAILED to connect to mongoose') })
@@ -33,6 +35,7 @@ const jobType = new GraphQLObjectType({
 const CustomerType = new GraphQLObjectType({
     name: 'Customer',
     fields: () => ({
+        _id : { type: GraphQLString},
         firstName: { type: GraphQLString },
         lastName: { type: GraphQLString },
         userName: { type: GraphQLString },
@@ -56,6 +59,17 @@ const LocationBlogType = new GraphQLObjectType({
     })
 })
 
+/*const PositionType = new GraphQLInputObjectType({
+    name: 'Position',
+    fields: () => ({
+        user : {type : GraphQLString},
+        created : {type: GraphQLString},
+        loc: {type: {type : GraphQLString}, coordinates:{type : new GraphQLList({type: GraphQLFloat, type: GraphQLFloat})}},
+        radius: {type: GraphQLInt},
+        cheatWithId: {type: GraphQLString}
+    })
+})*/
+
 //Root Query
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -75,6 +89,12 @@ const RootQuery = new GraphQLObjectType({
                 return UserFacade.getAllUsers();
             }
         },
+        /*positions: {
+            type: new GraphQLList(PositionType),
+            resolve(parentValue, args){
+                return LocationBlogFacade.getAllPositions();
+            }
+        },*/
         locationBlogs: {
             type: new GraphQLList(LocationBlogType),
             resolve(parentValue, args){
@@ -104,7 +124,17 @@ const mutation = new GraphQLObjectType({
             resolve(parentValue, args) {
                 return UserFacade.addUser(args.firstName, args.lastName, args.userName, args.password,/* jobsArray*/);  
             }
-        }
+        },
+            /*addPosition : {
+                type: PositionType,
+                args: {
+                    user: {type : new GraphQLNonNull(GraphQLString)},
+                    loc: {coordinates : {type : new GraphQLNonNull(GraphQLList(GraphQLFloat))}}
+                },
+                resolve(parentValue, args) {
+                    return LocationBlogFacade.addPosition(args.user, args.);  
+                }
+            },*/
     }
 })
 module.exports = new GraphQLSchema({

@@ -24,6 +24,14 @@ getAllPositionBlogs : function(){
     })
     return foundItems;
 },
+getAllPositions : function(){
+    var foundItems = new Promise((resolve, reject)=>{
+        Position.find({}, (err, data) => {
+            err ? reject(err) : resolve(data)
+        })
+    })
+    return foundItems;
+},
 
 likeLocationBlog : function() {
 
